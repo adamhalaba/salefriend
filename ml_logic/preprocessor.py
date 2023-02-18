@@ -55,10 +55,10 @@ def make_pipeline_fit_transform(X: pd.DataFrame):
                     (cat_transformer,cat_col),
                     (custom_transformer, custom_col),
                     remainder='passthrough')
-    if X.shape[0]==1:
-        pipeline_1 = preproc_basic.transform(X)
-    else:
-        pipeline_1 =preproc_basic.fit_transform(X)
+    #if X.shape[0]==1:
+        #pipeline_1 = preproc_basic.transform(X)
+    #else:
+    pipeline_1 =preproc_basic.fit_transform(X)
 
     pipeline_1 = pd.DataFrame(pipeline_1)
 
