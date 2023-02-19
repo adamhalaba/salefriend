@@ -29,7 +29,7 @@ def civility_replacer(serie):
 
 # Creation of basic pipeline
 
-def make_pipeline_fit_transform(X: pd.DataFrame):
+def pipeline_preproc_basic():
 
     r_scaler = RobustScaler()
     ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
@@ -58,8 +58,7 @@ def make_pipeline_fit_transform(X: pd.DataFrame):
     #if X.shape[0]==1:
         #pipeline_1 = preproc_basic.transform(X)
     #else:
-    pipeline_1 =preproc_basic.fit_transform(X)
+    #pipeline_1 =preproc_basic.fit_transform(X)
+    #pipeline_1 = pd.DataFrame(pipeline_1)
 
-    pipeline_1 = pd.DataFrame(pipeline_1)
-
-    return pipeline_1
+    return preproc_basic

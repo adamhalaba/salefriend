@@ -5,8 +5,6 @@ from sklearn.model_selection import train_test_split
 import pickle
 from ml_logic.params import filename
 
-def define_train_model(X_processed: pd.DataFrame,y):
+def define_train_model():
     model = LogisticRegression(max_iter=100)
-    model = model.fit(X_processed,y)
-    pickle.dump(model,open(filename,"wb"))
     return model
