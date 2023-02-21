@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import random
+
 def clean_data(df_requests_originals: pd.DataFrame,df_bookings_originals: pd.DataFrame, df_users_originals: pd.DataFrame, df_logins: pd.DataFrame):
     #Preselection de colonnes
 
@@ -78,6 +80,9 @@ def clean_data(df_requests_originals: pd.DataFrame,df_bookings_originals: pd.Dat
     # Creation of month_depart
     merged_df['month_depart'] = pd.to_datetime(merged_df['start_date_rq']).dt.month_name()
 
+    # correct civility nan, prof, dr
+    merged_df['civility'] = civility_replacer(pd.DataFrame(merged_df['civility']))
+
     # Create Target
     # Calculate the difference between the request's start date and booking's start date
     merged_df['date_diff'] = np.abs(pd.to_datetime(merged_df['start_date_rq']) - pd.to_datetime(merged_df['start_date_bk']))
@@ -108,7 +113,8 @@ def clean_data(df_requests_originals: pd.DataFrame,df_bookings_originals: pd.Dat
     # delete rows with duration values bigger than 28 days
     merged_df.drop(merged_df[merged_df["duration"] > 28].index, inplace = True)
 
-    data = merged_df[['id_user', 'is_new_user', 'id_charter_company', 'charter_type', 'country_name',
+
+    data = merged_df[['is_new_user', 'id_charter_company', 'charter_type', 'country_name',
        'destination_flexible', 'flexible_date', 'request_date_day',
        'month_request', 'day_time_request',
        'days_before_departure',  'in_europe',
@@ -117,7 +123,22 @@ def clean_data(df_requests_originals: pd.DataFrame,df_bookings_originals: pd.Dat
 
     return data
 
+def civility_replacer(serie : pd.DataFrame):
+    # Replace values of 'Dr.' and 'Prof.' with NaN
+    values_to_replace = ['Dr.', 'Prof.']
+    serie.replace(values_to_replace, np.nan, inplace=True)
 
+    # Calculate the ratio of female to male
+    female_count = serie[serie['civility'] == 'Ms'].shape[0]
+    male_count = serie[serie['civility'] == 'Mr'].shape[0]
+    ratio = round(female_count / (female_count + male_count), 1)
+
+    # Replace NaN values with 'Ms' or 'Mr' using the calculated ratio
+    nan_indexes = serie[serie.isna()].index
+    replacement = random.choices(['Ms', 'Mr'], weights=[ratio, (1-ratio)], k=len(nan_indexes))
+    serie.loc[nan_indexes, 'civility'] = replacement
+    #merged_df['civility'].loc[nan_indexes, 'civility'] = replacement
+    return serie
 
 def get_mac(user_agent):
     mac_list = ['Macintosh', 'iPhone','iPad', 'iPod']
