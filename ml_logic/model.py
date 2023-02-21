@@ -6,5 +6,5 @@ import pickle
 from ml_logic.params import filename
 
 def define_train_model():
-    model = LogisticRegression(max_iter=100)
+    model = LogisticRegression(max_iter=1000)
     return model

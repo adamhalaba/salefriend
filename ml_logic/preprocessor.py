@@ -1,4 +1,3 @@
-import random
 from sklearn.preprocessing import RobustScaler, StandardScaler, OneHotEncoder, FunctionTransformer
 from sklearn.pipeline import Pipeline, make_pipeline, FeatureUnion, make_union
 from sklearn.model_selection import train_test_split
@@ -9,23 +8,6 @@ import pandas as pd
 import numpy as np
 from ml_logic.params import filename_2
 import pickle
-
-def civility_replacer(serie : pd.DataFrame):
-    # Replace values of 'Dr.' and 'Prof.' with NaN
-    values_to_replace = ['Dr.', 'Prof.']
-    serie.replace(values_to_replace, np.nan, inplace=True)
-
-    # Calculate the ratio of female to male
-    female_count = serie[serie['civility'] == 'Ms'].shape[0]
-    male_count = serie[serie['civility'] == 'Mr'].shape[0]
-    ratio = round(female_count / (female_count + male_count), 1)
-
-    # Replace NaN values with 'Ms' or 'Mr' using the calculated ratio
-    nan_indexes = serie[serie.isna()].index
-    replacement = random.choices(['Ms', 'Mr'], weights=[ratio, (1-ratio)], k=len(nan_indexes))
-    serie.loc[nan_indexes, 'civility'] = replacement
-    #merged_df['civility'].loc[nan_indexes, 'civility'] = replacement
-    return serie
 
 # Creation of basic pipeline
 
@@ -45,11 +27,6 @@ def pipeline_preproc_basic():
                 'day_time_request',
                 'country_name_us',
                 'civility']
-
-    # move civility preprocessor to data
-    #custom_col = ['civility']
-    #civility = FunctionTransformer(lambda x : civility_replacer(x))
-    #custom_transformer = make_pipeline(civility, ohe)
 
 
     preproc_basic = make_column_transformer(

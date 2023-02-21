@@ -50,35 +50,6 @@ def preprocess_and_train():
     #filename = 'finalized_model.sav'
     #pickle.dump(full_model, open(filename, 'wb'))
 
-    #only for test prediction for X_new
-    # X_new = pd.DataFrame(dict(
-    #         key=["2013-07-06 17:18:00"],# useless but the pipeline requires it
-    #         id_user=[298572],
-    #         is_new_user=[0],
-    #         id_charter_company=[300],
-    #         charter_type=[1],
-    #         country_name=['Thailand'],
-    #         destination_flexible=[0],
-    #         flexible_date=[7],
-    #         request_date_day=['Friday'],
-    #         month_request=['December'],
-    #         day_time_request=['night'],
-    #         days_before_departure=[168],
-    #         in_europe=[0],
-    #         num_passengers=[5],
-    #         kid_on_board=[0],
-    #         duration=[6],
-    #         civility=['Mr'],
-    #         country_name_us=['Singapore'],
-    #         is_mac=[1.0]
-    #     ))
-
-    # #Predict X_new (y_pred)
-    # y_pred = full_model.predict(X_new)
-
-    # #Probability of being booked, ie. y_pred=1
-    # y_proba_booked= full_model.predict_proba(X_new)
-    # print(f'({y_pred}, {round(y_proba_booked[0][1],2)})')
     return None
 
 def predict(X_new: pd.DataFrame = None):
@@ -87,7 +58,6 @@ def predict(X_new: pd.DataFrame = None):
 
         X_new = pd.DataFrame(dict(
             key=["2013-07-06 17:18:00"],# useless but the pipeline requires it
-            id_user=[298572],
             is_new_user=[0],
             id_charter_company=[300],
             charter_type=[1],
@@ -117,23 +87,11 @@ def predict(X_new: pd.DataFrame = None):
 
     #Probability of being booked, ie. y_pred=1
     y_proba_booked= loaded_model.predict_proba(X_new)
-    print(f'({y_pred}, {round(y_proba_booked[0][1],2)})')
+    print(f'({y_pred}, Probability of conversion:{round(y_proba_booked[0][1],3)*100} %)')
     return y_pred
 
 
 if __name__== "__main__":
     preprocess_and_train()
     predict()
-    #predict()
-    # Load Datasets
-    # df_requests = pd.read_csv(os.path.join(LOCAL_DATA_PATH,"Requests.csv"))
-    # df_bookings = pd.read_csv(os.path.join(LOCAL_DATA_PATH,"Bookings.csv"))
-    # df_users = pd.read_csv(os.path.join(LOCAL_DATA_PATH,"Users.csv"))
-    # df_logins = pd.read_csv(os.path.join(LOCAL_DATA_PATH,"Logins.csv"))
-
-    #Return final Dataset
-    # data = clean_data(df_requests, df_bookings, df_users, df_logins)
-    # X_new = data.loc[[0]]
-    # X_new = X_new.drop(columns=["booked"])
-    # predict(X_new)
     print("End")
