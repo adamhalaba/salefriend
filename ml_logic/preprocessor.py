@@ -10,7 +10,7 @@ import numpy as np
 from ml_logic.params import filename_2
 import pickle
 
-def civility_replacer(serie):
+def civility_replacer(serie : pd.DataFrame):
     # Replace values of 'Dr.' and 'Prof.' with NaN
     values_to_replace = ['Dr.', 'Prof.']
     serie.replace(values_to_replace, np.nan, inplace=True)
@@ -43,17 +43,19 @@ def pipeline_preproc_basic():
                 'request_date_day',
                 'month_request',
                 'day_time_request',
-                'country_name_us']
+                'country_name_us',
+                'civility']
 
-    civility = FunctionTransformer(lambda x: civility_replacer(x))
+    # move civility preprocessor to data
+    #custom_col = ['civility']
+    #civility = FunctionTransformer(lambda x : civility_replacer(x))
+    #custom_transformer = make_pipeline(civility, ohe)
 
-    custom_transformer = make_pipeline(civility, ohe)
-    custom_col = ['civility']
 
     preproc_basic = make_column_transformer(
                     (num_transformer,num_col),
                     (cat_transformer,cat_col),
-                    (custom_transformer, custom_col),
+    #                (custom_transformer, custom_col),
                     remainder='passthrough')
     #if X.shape[0]==1:
         #pipeline_1 = preproc_basic.transform(X)

@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+
+from ml_logic.preprocessor import civility_replacer
+
 def clean_data(df_requests_originals: pd.DataFrame,df_bookings_originals: pd.DataFrame, df_users_originals: pd.DataFrame, df_logins: pd.DataFrame):
     #Preselection de colonnes
 
@@ -107,6 +110,10 @@ def clean_data(df_requests_originals: pd.DataFrame,df_bookings_originals: pd.Dat
 
     # delete rows with duration values bigger than 28 days
     merged_df.drop(merged_df[merged_df["duration"] > 28].index, inplace = True)
+
+    # correct civility nan, prof, dr
+
+    merged_df['civility'] = civility_replacer(pd.DataFrame(merged_df['civility']))
 
     data = merged_df[['id_user', 'is_new_user', 'id_charter_company', 'charter_type', 'country_name',
        'destination_flexible', 'flexible_date', 'request_date_day',
