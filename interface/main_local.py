@@ -3,15 +3,16 @@ import numpy as np
 import pandas as pd
 import os
 import pickle
-
+import sklearn
 
 from ml_logic.data import clean_data
 from ml_logic.params import LOCAL_DATA_PATH
-#from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline, make_pipeline
 from ml_logic.preprocessor import pipeline_preproc_basic
 from ml_logic.model import define_train_model
 from ml_logic.params import filename
+from sklearn.model_selection import cross_val_score, cross_validate
 
 def preprocess_and_train():
     # Load Datasets
@@ -28,11 +29,20 @@ def preprocess_and_train():
     #print(X_new)
 
     # Balancing
+    data_1 = data[data['booked'] == 1]
+    data_0 = data[data['booked'] == 0]\
+            .sample(n=round(len(data_1)*1.5))
+    data_undersampled = pd.concat([data_0, data_1], axis=0).sample(frac=1)
+    X = data_undersampled.drop(columns='booked')
+    y = data_undersampled['booked']
+
+
+
     #data =
 
     # Create X, y
-    X = data.drop(columns=['booked'])
-    y = data['booked']
+    # X = data.drop(columns=['booked'])
+    # y = data['booked']
 
     # Define Preprocess num, cat and custom
     preproc_basic = pipeline_preproc_basic()
