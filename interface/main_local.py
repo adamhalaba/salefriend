@@ -97,6 +97,7 @@ def pred(X_new: pd.DataFrame = None):
 
     #Probability of being booked, ie. y_pred=1
     y_proba_booked = loaded_model.predict_proba(X_new)[0][1]
+    # round to three decimals
     y_proba_booked = round(y_proba_booked,3)
     print(f'({y_pred}, Probability of conversion:{y_proba_booked})')
     return y_proba_booked
