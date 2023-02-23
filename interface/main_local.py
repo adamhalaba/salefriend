@@ -62,7 +62,7 @@ def preprocess_and_train():
 
     return None
 
-def predict(X_new: pd.DataFrame = None):
+def pred(X_new: pd.DataFrame = None):
 
     if X_new is None:
 
@@ -96,12 +96,13 @@ def predict(X_new: pd.DataFrame = None):
     y_pred = loaded_model.predict(X_new)
 
     #Probability of being booked, ie. y_pred=1
-    y_proba_booked= loaded_model.predict_proba(X_new)
-    print(f'({y_pred}, Probability of conversion:{round(y_proba_booked[0][1],3)*100} %)')
-    return y_pred
+    y_proba_booked = loaded_model.predict_proba(X_new)[0][1]
+    y_proba_booked = round(y_proba_booked,3)
+    print(f'({y_pred}, Probability of conversion:{y_proba_booked})')
+    return y_proba_booked
 
 
 if __name__== "__main__":
     preprocess_and_train()
-    predict()
+    pred()
     print("End")

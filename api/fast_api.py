@@ -3,6 +3,7 @@ from fastapi import FastAPI
 import pickle
 import pandas as pd
 import pydantic
+from interface.main_local import pred
 
 app = FastAPI()
 
@@ -61,9 +62,14 @@ def predict(input_features: PredictionForm):
             country_name_us=[input_features['country_name_us']],
             is_mac=[input_features['is_mac']]
         ))
+    # TO BE CLEANED LATER
+    #model = load_model()
+    #result = model.predict_proba(X_new)
+    #result = round(result[0][1],3)*100
 
-    model = load_model()
-    result = model.predict_proba(X_new)
-    result = round(result[0][1],3)*100
+    # "pred" function returns the probability of being booked (y=1) with 3 decimals
+    result = pred(X_new)
+    # Convert to percentage
+    result = result*100
     print("Model Testing = ", result)
     return {"Probability of Booking": result, "Features" : input_features}
