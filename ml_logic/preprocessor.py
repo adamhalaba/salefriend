@@ -7,6 +7,7 @@ from sklearn.impute import SimpleImputer
 import pandas as pd
 import numpy as np
 from ml_logic.params import filename_2
+
 import pickle
 
 # Creation of basic pipeline

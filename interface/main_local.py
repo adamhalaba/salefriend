@@ -104,6 +104,6 @@ def pred(X_new: pd.DataFrame = None):
 
 
 if __name__== "__main__":
-    preprocess_and_train()
+    #preprocess_and_train()
     pred()
     print("End")
