@@ -23,8 +23,8 @@ def preprocess_and_train():
 
     #Return final Dataset
     data = clean_data(df_requests, df_bookings, df_users, df_logins)
-    X_new = data.loc[[0]]
-    X_new = X_new.drop(columns=["booked"])
+    # X_new = data.loc[[0]]
+    # X_new = X_new.drop(columns=["booked"])
     #print(data.shape)
     #print(X_new)
 
@@ -104,6 +104,6 @@ def pred(X_new: pd.DataFrame = None):
 
 
 if __name__== "__main__":
-    #preprocess_and_train()
+    preprocess_and_train()
     pred()
     print("End")
