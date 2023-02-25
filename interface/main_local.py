@@ -69,21 +69,21 @@ def predict(X_new: pd.DataFrame = None):
         X_new = pd.DataFrame(dict(
             key=["2013-07-06 17:18:00"],# useless but the pipeline requires it
             is_new_user=[0],
-            id_charter_company=[300],
-            charter_type=[1],
-            country_name=['Thailand'],
+            id_charter_company=[232],
+            charter_type=[0],
+            country_name=['Spain'],
             destination_flexible=[0],
-            flexible_date=[7],
-            request_date_day=['Friday'],
-            month_request=['December'],
-            day_time_request=['night'],
-            days_before_departure=[168],
-            in_europe=[0],
-            num_passengers=[5],
+            flexible_date=[0],
+            request_date_day=['Sunday'],
+            month_request=['April'],
+            day_time_request=['evening'],
+            days_before_departure=[60],
+            in_europe=[1],
+            num_passengers=[2],
             kid_on_board=[0],
-            duration=[6],
+            duration=[7],
             civility=['Mr'],
-            country_name_us=['Singapore'],
+            country_name_us=['Spain'],
             is_mac=[1.0]
         ))
     #load trained model
@@ -97,11 +97,12 @@ def predict(X_new: pd.DataFrame = None):
 
     #Probability of being booked, ie. y_pred=1
     y_proba_booked= loaded_model.predict_proba(X_new)
+    print(y_proba_booked)
     print(f'({y_pred}, Probability of conversion:{round(y_proba_booked[0][1],3)*100} %)')
     return y_pred
 
 
 if __name__== "__main__":
-    preprocess_and_train()
+    #preprocess_and_train()
     predict()
     print("End")
